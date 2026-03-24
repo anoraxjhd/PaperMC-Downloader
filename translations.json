@@ -1,0 +1,28 @@
+{
+  "de": {
+    "Error": "Fehler",
+    "Servers response is": "Server Antwort ist",
+    "found": "Gefunden",
+    "Press Download to download Paper": "Drücke Auf 'Herunterladen' um Paper herunterzuladen",
+    "not found": "nicht gefunden",
+    "Data is None are you Online": "Data ist None bist du mit dem\nInternet Verbunden",
+    "Enter a version": "Gebe eine Version ein",
+    "Download": "Herunterladen",
+    "Enter a Version and Click Send": "Gebe eine Version ein und klicke 'Senden'",
+    "Send": "Senden",
+    "Version": "Version"
+  },
+  "en": {
+    "Error": "Error",
+    "Servers response is": "Servers response is",
+    "found": "found",
+    "Press Download to download Paper": "Press 'Download' to download Paper",
+    "not found": "not found",
+    "Data is None are you Online": "Data is None are you Online",
+    "Enter a version": "Enter a version",
+    "Download": "Download",
+    "Enter a Version and Click Send": "Enter a Version and Click 'Send'",
+    "Send": "Send",
+    "Version": "Version"
+  }
+}
