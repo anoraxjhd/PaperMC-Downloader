@@ -7,22 +7,20 @@ from json import load, dumps
 from sys import argv
 
 # VARS
-
 app = None
 terminalClose = False
 paperURL = None
 no_gui = False
 data = None
-# Settings
+versionURL = None
 
+# Settings
 lang = "en"
 project = "paper"
-MINECRAFT_VERSION = None
-RELEASE = 1
 
 ctk.set_appearance_mode("dark")
 URL = f"https://fill.papermc.io/v3/projects/{project}"
-versionURL = None
+
 
 allowedStatus = [200, 203]
 supportedLanguages = ["de", "en"]
@@ -42,8 +40,8 @@ def getData():
     return response.json()
   else:
     if no_gui:
-      print(f"\n{translate("Error", lang=lang)}: {translate("Data is None are you Online", lang=lang)}"); exit(1)
-    mb.showerror(str(translate("Error", lang=lang)) + " " + str(status), f'{translate("Servers response is", lang=lang)}: {status}'); app.destroy(); exit(1)
+      print(f"\n{translate("Error", lang=lang)}: {translate("Data is None are you Online", lang=lang)}"); terminalClose = True
+    mb.showerror(str(translate("Error", lang=lang)) + " " + str(status), f'{translate("Servers response is", lang=lang)}: {status}'); app.destroy()
 
 def download(url):
   with open(url.split("/")[-1], 'wb') as f:
@@ -52,7 +50,7 @@ def download(url):
 def send(version, build = "latest"):
   # Setup stuff
   if not version.count(".") >= 1: return
-  global paperURL, terminalClose, MINECRAFT_VERSION, versionURL
+  global paperURL, terminalClose, versionURL
   versionURL = f"https://fill.papermc.io/v3/projects/{project}/versions/{version}/builds"
   data = get(versionURL).json()
   # Checking if build is supposed to be latest
@@ -75,6 +73,7 @@ def send(version, build = "latest"):
   else:
     for i in data:
       if i["id"] == int(build):
+        print(f"Paper {version} {translate("found", lang=lang)}.\n{translate("Downloading", lang=lang)}...")
         return i["downloads"]["server:default"]["url"]
     else:
       return False
@@ -120,7 +119,6 @@ def terminal():
       if paperURL != False:
         download(paperURL)
         terminalClose = True
-      
 
 def parseArgs():
   global lang, no_gui
