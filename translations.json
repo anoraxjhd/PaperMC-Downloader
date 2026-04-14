@@ -14,7 +14,11 @@
     "Version": "Version",
     "Open the Link to download Paper": "Open the Link to download Paper",
     "Downloading": "Downloading",
-    "ReleaseTextTerminal": "Release (leave empty for newest): "
+    "ReleaseTextTerminal": "Release (leave empty for newest): ",
+    "File saved to": "File saved to",
+    "Error Unknown release or version.": "Error Unknown release or version.",
+    "download started": "Download Started.",
+    "Build (leave empty for newest)": "Build (empty for newest)"
   },
   "de": {
     "Error": "Fehler",
@@ -31,6 +35,10 @@
     "Version": "Version",
     "Open the Link to download Paper": "Öffne den Link um Paper herunterzuladen",
     "Downloading": "Downloading",
-    "ReleaseTextTerminal": "Release (leer für neusten): "
+    "ReleaseTextTerminal": "Release (leer für neusten): ",
+    "File saved to": "Datei gespeichert in",
+    "Error Unknown release or version.": "Fehler: Unbekannter Release oder Version.",
+    "download started": "Download hat gestartet.",
+    "Build (leave empty for newest)": "Build (Leer für neuste version)"
   }
 }

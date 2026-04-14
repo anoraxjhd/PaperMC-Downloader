@@ -1,10 +1,9 @@
 # Imports
 from threading import Thread
 from requests import get
-import customtkinter as ctk
-from tkinter import messagebox as mb
-from json import load, dumps
+from json import load
 from sys import argv
+from os import path
 
 # VARS
 app = None
@@ -17,16 +16,13 @@ versionURL = None
 # Settings
 lang = "en"
 project = "paper"
-
-ctk.set_appearance_mode("dark")
 URL = f"https://fill.papermc.io/v3/projects/{project}"
-
-
 allowedStatus = [200, 203]
 supportedLanguages = ["de", "en"]
 
 with open("translations.json", "r", encoding="UTF-8") as f:
   translations = load(f)
+
 def translate(text, lang="en"):
   try:
     return translations.get(lang, {}).get(text, text)
@@ -34,22 +30,29 @@ def translate(text, lang="en"):
     return text
 
 def getData():
+  global terminalClose
   response = get(URL)
   status = response.status_code
   if status in allowedStatus:
     return response.json()
   else:
     if no_gui:
-      print(f"\n{translate("Error", lang=lang)}: {translate("Data is None are you Online", lang=lang)}"); terminalClose = True
+      print(f"\n{translate("Error", lang=lang)}: {translate("Data is None are you Online", lang=lang)}"); terminalClose = True; return
     mb.showerror(str(translate("Error", lang=lang)) + " " + str(status), f'{translate("Servers response is", lang=lang)}: {status}'); app.destroy()
 
 def download(url):
-  with open(url.split("/")[-1], 'wb') as f:
-    f.write(get(url).content)
+  storage = url
+  if storage:
+    if not no_gui:
+      mb.showinfo(translate("download started", lang=lang), translate("download started", lang=lang))
+    with open(str(storage).split("/")[-1], 'wb') as f:
+      f.write(get(storage).content)
+    if not no_gui:
+      mb.showinfo(translate("Download", lang=lang), f"{translate("File saved to", lang=lang)} {path.dirname(path.abspath(__file__))}.")
 
 def send(version, build = "latest"):
   # Setup stuff
-  if not version.count(".") >= 1: return
+  if not version.count(".") >= 1: return False
   global paperURL, terminalClose, versionURL
   versionURL = f"https://fill.papermc.io/v3/projects/{project}/versions/{version}/builds"
   data = get(versionURL).json()
@@ -83,26 +86,44 @@ def beforeSend(version = "", build = "latest"):
     print(f"{translate("Enter a version", lang=lang)}."); return 1
   if no_gui and not version:
     print(f"{translate("Enter a version", lang=lang)}."); return 1
-  return send(version, build=build)
+  data = send(version, build=build)
+  return data
+
+def setupDownload(version, build):
+  if build:
+    url = beforeSend(version, build)
+    Thread(target=download, args=(url,), daemon=True).start()
+  else:
+    url = beforeSend(version)
+    Thread(target=download, args=(url,), daemon=True).start()
 
 def GUI():
+  global mb
+  import customtkinter as ctk
+  from tkinter import messagebox as mb
   global resultLabel, versionInput, app
+
+  ctk.set_appearance_mode("dark")
+
   app = ctk.CTk()
-  app.geometry("400x200")
+  app.geometry("350x250")
   app.title("PaperMC Downloader")
   app.iconbitmap("src/icon.ico")
 
   resultLabel = ctk.CTkLabel(app, text="/")
   resultLabel.pack(padx=20, pady=10)
 
-  btnDownload = ctk.CTkButton(app, text=translate("Download", lang=lang), command=lambda: download(paperURL))
-  btnDownload.pack(padx=50)
+  btnDownload = ctk.CTkButton(app, text=translate("Download", lang=lang), width=175, command=lambda: setupDownload(versionInput.get(), buildInput.get()))
+  btnDownload.pack(padx=50, pady=7.5)
 
-  versionInput = ctk.CTkEntry(app, placeholder_text=translate("Version", lang=lang))
-  versionInput.pack(padx=20, pady=20)
+  versionInput = ctk.CTkEntry(app, placeholder_text=translate("Version", lang=lang), width=175)
+  versionInput.pack(padx=20, pady=10)
 
-  submit = ctk.CTkButton(app, text=translate("Send", lang=lang), command=lambda: beforeSend(version=versionInput.get()))
-  submit.pack(padx=20)
+  buildInput = ctk.CTkEntry(app, placeholder_text=translate("Build (leave empty for newest)", lang=lang), width=175)
+  buildInput.pack(padx=20, pady=10)
+
+  submit = ctk.CTkButton(app, text=translate("Send", lang=lang), command=lambda: beforeSend(version=versionInput.get()), width=175)
+  submit.pack(padx=20, pady=7.5)
 
   app.mainloop()
 
@@ -118,7 +139,10 @@ def terminal():
         paperURL = beforeSend(version=version)
       if paperURL != False:
         download(paperURL)
+        print(translate("Download", lang=lang), f"{translate("File saved to", lang=lang)} {path.dirname(path.abspath(__file__))}.")
         terminalClose = True
+      else:
+        print(translate("Error Unknown release or version.", lang=lang))
 
 def parseArgs():
   global lang, no_gui
