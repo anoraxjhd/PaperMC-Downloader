@@ -7,3 +7,6 @@ after that you can use:
 ``pip install -r requirements.txt && python get_paper.py``
 
 Then type the version you want download the JAR and you are good to go!
+
+Preview:
+<img src="assets/preview.png">
