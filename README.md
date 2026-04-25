@@ -8,7 +8,7 @@ after that you can use:
 
 Supportet Arguments are:
 - ``--no-gui``
-- ``--lang <lang (2)>``
+- ``--lang <lang>``
 
 Supportet Languages Are:
 - Englisch (en)

@@ -1,2 +1,4 @@
-customtkinter==5.2.2
+# Absolutely Required
 requests==2.32.5
+# Only if you want to use GUI
+customtkinter==5.2.2

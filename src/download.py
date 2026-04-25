@@ -25,14 +25,12 @@ def send(version, build="latest", resultLabel=None):
   if version.count(".") < 1:
     return False
 
-  # Helper to notify via GUI or CLI
   def notify(msg):
     if vars.no_gui:
       print(msg)
     elif resultLabel:
       resultLabel.configure(text=msg)
 
-  global versionURL
   versionURL = f"https://fill.papermc.io/v3/projects/{vars.project}/versions/{version}/builds"
 
   try:
@@ -44,7 +42,6 @@ def send(version, build="latest", resultLabel=None):
     notify(f"Paper {version} {translate.translate('not found')}.")
     return False
 
-  # Find the target build entry
   try:
     if build == "latest":
       entry = data[0]
