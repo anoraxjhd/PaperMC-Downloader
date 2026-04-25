@@ -38,7 +38,7 @@
     "ReleaseTextTerminal": "Release (leer für neusten): ",
     "File saved to": "Datei gespeichert in",
     "Error Unknown release or version.": "Fehler: Unbekannter Release oder Version.",
-    "download started": "Download hat gestartet.",
+    "download started": "Download ist gestartet.",
     "Build (leave empty for newest)": "Build (Leer für neuste version)"
   }
 }

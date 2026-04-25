@@ -6,27 +6,10 @@ import src.vars as vars
 mb = None
 
 def setupDownload(version, build, resultLabel = None):
-  if build:
-    url = beforeSend(version, build, resultLabel=resultLabel)
-    Thread(target=download, args=(url,), daemon=True).start()
-  else:
-    url = beforeSend(version, resultLabel=resultLabel)
-    Thread(target=download, args=(url,), daemon=True).start()
-
-def getData(URL):
-  global terminalClose
-  response = get(URL)
-  status = response.status_code
-  if status in vars.allowedStatus:
-    return response.json()
-  else:
-    if vars.no_gui:
-      print(f"\n{translate.translate("Error")}: {translate.translate("Invalid status code")}: {status}"); vars.terminalClose = True; return
-    mb.showerror(translate.translate("Error"), f"{translate.translate("Invalid status code")}: {status}"); vars.app.destroy()
+  Thread(target=download, args=(beforeSend(version, build, resultLabel=resultLabel),), daemon=True).start()
 
 def download(URL : str):
-  if URL == 1: return 1
-  if not URL.startswith("https://") and not URL.startswith("http://"): return 1
+  if URL == 1 or not URL.startswith("https://") and not URL.startswith("http://"): return 1
   if vars.no_gui:
     print(f"{translate.translate("download started")}")
   else:
@@ -34,71 +17,58 @@ def download(URL : str):
   with open(str(URL).split("/")[-1], 'wb') as f:
     f.write(get(URL).content)
   if vars.no_gui:
-    print(f"\n{translate.translate("File saved to")}: {vars.savePath}")
+    print(f"\n{translate.translate("File saved to")}: {vars.savePath}\\{str(URL).split("/")[-1]}")
   else:
-    mb.showinfo(translate.translate("Download"), f"{translate.translate("File saved to")}: {vars.savePath}")
+    mb.showinfo(translate.translate("Download"), f"{translate.translate("File saved to")}: {vars.savePath}\\{str(URL).split("/")[-1]}")
 
-def send(version, build = "latest", resultLabel = None):
-  # Setup stuff
-  if not version.count(".") >= 1: return False
-  global paperURL, versionURL
+def send(version, build="latest", resultLabel=None):
+  if version.count(".") < 1:
+    return False
+
+  # Helper to notify via GUI or CLI
+  def notify(msg):
+    if vars.no_gui:
+      print(msg)
+    elif resultLabel:
+      resultLabel.configure(text=msg)
+
+  global versionURL
   versionURL = f"https://fill.papermc.io/v3/projects/{vars.project}/versions/{version}/builds"
+
   try:
     data = get(versionURL).json()
-  except:
-    if not vars.no_gui:
-      resultLabel.configure(text=f"Paper {version} {translate.translate("not found")}.")
-      return False
-    else:
-      print(f"Paper {version} {translate.translate("not found")}.")
-      return False
-  
-  # Check if data is a list (valid response)
+  except Exception:
+    data = None
+
   if not isinstance(data, list):
-    if not vars.no_gui:
-      resultLabel.configure(text=f"Paper {version} {translate.translate("not found")}.")
-      return False
+    notify(f"Paper {version} {translate.translate('not found')}.")
+    return False
+
+  # Find the target build entry
+  try:
+    if build == "latest":
+      entry = data[0]
+      build_label = version
     else:
-      print(f"Paper {version} {translate.translate("not found")}.")
-      return False
-  
-  # Checking if build is supposed to be latest
-  if build == "latest":
-    try:
-      paperURL = data[0]["downloads"]["server:default"]["url"]
-      if not vars.no_gui:
-        resultLabel.configure(text=f"Paper {version} {translate.translate("found")}.\n{translate.translate("Press ""Download"" to download Paper")}.")
-        return paperURL
-      else:
-        print(f"Paper {version} {translate.translate("found")}.\n{translate.translate("Downloading")}...")
-        return paperURL
-    except (KeyError, IndexError):
-      if not vars.no_gui:
-        resultLabel.configure(text=f"Paper {version} {translate.translate("not found")}.")
-        return False
-      else:
-        print(f"Paper {version} {translate.translate("not found")}.")
-        return False
+      build_id = int(build)
+      entry = next((i for i in data if isinstance(i, dict) and i.get("id") == build_id), None)
+      build_label = f"{version} Build: {build}"
+
+    if entry is None:
+      raise ValueError("Build not found")
+
+    url = entry["downloads"]["server:default"]["url"]
+
+  except (KeyError, IndexError, ValueError, TypeError):
+    notify(f"Paper {version}{f' Build: {build}' if build != 'latest' else ''} {translate.translate('not found')}.")
+    return False
+
+  if vars.no_gui:
+    notify(f"Paper {build_label} {translate.translate('found')}.\n{translate.translate('Downloading')}...")
   else:
-    try:
-      for i in data:
-        if isinstance(i, dict) and i.get("id") == int(build):
-          if vars.no_gui:
-            print(f"Paper {version} {translate.translate("found")}.\n{translate.translate("Downloading")}..."); return i["downloads"]["server:default"]["url"]
-          resultLabel.configure(text=f"Paper {version} Build: {build} {translate.translate("found")}.\n{translate.translate("Press ""Download"" to download Paper")}.")
-          return i["downloads"]["server:default"]["url"]
-      else:
-        if not vars.no_gui:
-          resultLabel.configure(text=f"Paper {version} Build: {build} {translate.translate("not found")}.")
-        else:
-          print(f"Paper {version} Build: {build} {translate.translate("not found")}.")
-        return False
-    except (ValueError, TypeError):
-      if not vars.no_gui:
-        resultLabel.configure(text=f"Paper {version} Build: {build} {translate.translate("not found")}.")
-      else:
-        print(f"Paper {version} Build: {build} {translate.translate("not found")}.")
-      return False
+    notify(f"Paper {build_label} {translate.translate('found')}.\n{translate.translate('Press \"Download\" to download Paper')}.")
+
+  return url
     
 def beforeSend(version = "", build = "latest", resultLabel = None):
   global mb

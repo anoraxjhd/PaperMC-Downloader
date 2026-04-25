@@ -1,14 +1,10 @@
 import src.translate as translate
 import src.download as download
-from os import path
-from src.vars import app, terminalClose
+from src.vars import terminalClose
 
 def GUI():
-  global mb
   import customtkinter as ctk
-  from tkinter import messagebox as mb
-  global resultLabel, versionInput, app
-
+  global resultLabel, versionInput
   ctk.set_appearance_mode("dark")
 
   app = ctk.CTk()
@@ -38,13 +34,10 @@ def terminal():
   while not terminalClose:
     version = input(f"{translate.translate('Version')}: ")
     if version:
-      release = input(f"{translate.translate("ReleaseTextTerminal")}")
-      if release:
-        paperURL = download.beforeSend(version=version, build=release)
-      else:
-        paperURL = download.beforeSend(version=version)
-      if paperURL != False:
-        download.download(paperURL)
+      release = input(f"{translate.translate("ReleaseTextTerminal")}") 
+      URL = download.beforeSend(version=version, build=release)
+      if URL != False:
+        download.download(URL)
         terminalClose = True
       else:
         print(translate.translate("Error Unknown release or version."))

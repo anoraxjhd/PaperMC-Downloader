@@ -1,7 +1,5 @@
 # Imports
-from threading import Thread
 from sys import argv
-import src.download as download
 import src.ui as ui
 import src.vars as vars
 from os import path
@@ -27,11 +25,6 @@ def parseArgs():
       exit(1)
     i += 1
 
-def fetchData():
-  global data 
-  data = download.getData(vars.URL)
-
-Thread(target=fetchData, daemon=True).start()
 parseArgs()
 if vars.no_gui:
   ui.terminal()

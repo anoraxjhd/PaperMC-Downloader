@@ -1,9 +1,6 @@
 # VARS
-app = None
 terminalClose = False
-data = None
 no_gui = False
-paperURL = None
 versionURL = None
 savePath = None
 
