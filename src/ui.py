@@ -2,14 +2,14 @@ import src.translate as translate
 import src.download as download
 from src.vars import terminalClose
 
-def GUI():
+def GUI(projectType:str):
   import customtkinter as ctk
   global resultLabel, versionInput
   ctk.set_appearance_mode("dark")
 
   app = ctk.CTk()
   app.geometry("350x250")
-  app.title("PaperMC Downloader")
+  app.title(f"{projectType.capitalize()} Downloader")
   app.iconbitmap("src/icon.ico")
 
   resultLabel = ctk.CTkLabel(app, text="/")
@@ -29,8 +29,9 @@ def GUI():
 
   app.mainloop()
 
-def terminal():
+def terminal(projectType:str):
   global terminalClose
+  print(translate.translate("using project: ").format(project=projectType.capitalize()))
   while not terminalClose:
     version = input(f"{translate.translate('Version')}: ")
     if version:

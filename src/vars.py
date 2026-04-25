@@ -7,4 +7,5 @@ terminalClose = False
 lang = "en"
 project = "paper"
 allowedStatus = [200, 203]
+supportedProjects = ["paper", "folia", "velocity"]
 supportedLanguages = ["de", "en"]

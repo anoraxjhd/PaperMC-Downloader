@@ -9,6 +9,12 @@ after that you can use:
 Supportet Arguments are:
 - ``--no-gui``
 - ``--lang <lang>``
+- ``--project <project>``
+
+Supportet Projects are:
+- paper (Default)
+- folia
+- velocity
 
 Supportet Languages Are:
 - Englisch (en)

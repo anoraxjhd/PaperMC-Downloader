@@ -39,7 +39,7 @@ def send(version, build="latest", resultLabel=None):
     data = None
 
   if not isinstance(data, list):
-    notify(f"Paper {version} {translate.translate('not found')}.")
+    notify(f"{vars.project.capitalize()} {version} {translate.translate('not found')}.")
     return False
 
   try:
@@ -57,13 +57,13 @@ def send(version, build="latest", resultLabel=None):
     url = entry["downloads"]["server:default"]["url"]
 
   except (KeyError, IndexError, ValueError, TypeError):
-    notify(f"Paper {version}{f' Build: {build}' if build != 'latest' else ''} {translate.translate('not found')}.")
+    notify(f"{vars.project.capitalize()} {version}{f' Build: {build}' if build != 'latest' else ''} {translate.translate('not found')}.")
     return False
 
   if vars.no_gui:
-    notify(f"Paper {build_label} {translate.translate('found')}.\n{translate.translate('Downloading')}...")
+    notify(f"{vars.project.capitalize()} {build_label} {translate.translate('found')}.\n{translate.translate('Downloading')}...")
   else:
-    notify(f"Paper {build_label} {translate.translate('found')}.\n{translate.translate('Press \"Download\" to download Paper')}.")
+    notify(f"{vars.project.capitalize()} {build_label} {translate.translate('found')}.\n{translate.translate('Press Download to download').format(project=vars.project.capitalize())}.")
 
   return url
     

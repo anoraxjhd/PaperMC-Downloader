@@ -3,7 +3,7 @@
     "Error": "Error",
     "Servers response is": "Servers response is",
     "found": "found",
-    "Press Download to download Paper": "Press 'Download' to download Paper",
+    "Press Download to download": "Press 'Download' to download {project}",
     "not found": "not found",
     "invalid": "is invalid",
     "Data is None are you Online": "Data is None are you Online",
@@ -12,19 +12,19 @@
     "Enter a Version and Click Send": "Enter a Version and Click 'Send'",
     "Send": "Send",
     "Version": "Version",
-    "Open the Link to download Paper": "Open the Link to download Paper",
     "Downloading": "Downloading",
     "ReleaseTextTerminal": "Release (leave empty for newest): ",
     "File saved to": "File saved to",
     "Error Unknown release or version.": "Error Unknown release or version.",
     "download started": "Download Started.",
-    "Build (leave empty for newest)": "Build (empty for newest)"
+    "Build (leave empty for newest)": "Build (empty for newest)",
+    "using project: ": "Using project: {project}"
   },
   "de": {
     "Error": "Fehler",
     "Servers response is": "Server Antwort ist",
     "found": "Gefunden",
-    "Press Download to download Paper": "Drücke Auf 'Herunterladen' um Paper herunterzuladen",
+    "Press Download to download": "Drücke Auf Herunterladen um {project} herunterzuladen",
     "not found": "nicht gefunden",
     "invalid": "invalid",
     "Data is None are you Online": "Data ist None bist du mit dem\nInternet Verbunden",
@@ -33,12 +33,12 @@
     "Enter a Version and Click Send": "Gebe eine Version ein und klicke 'Senden'",
     "Send": "Senden",
     "Version": "Version",
-    "Open the Link to download Paper": "Öffne den Link um Paper herunterzuladen",
     "Downloading": "Downloading",
     "ReleaseTextTerminal": "Release (leer für neusten): ",
     "File saved to": "Datei gespeichert in",
     "Error Unknown release or version.": "Fehler: Unbekannter Release oder Version.",
     "download started": "Download ist gestartet.",
-    "Build (leave empty for newest)": "Build (Leer für neuste version)"
+    "Build (leave empty for newest)": "Build (Leer für neuste version)",
+    "using project: ": "Benutze Projekt: {project}"
   }
 }

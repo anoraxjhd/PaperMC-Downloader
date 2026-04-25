@@ -11,12 +11,15 @@ def parseArgs():
   parser.add_argument("--lang", choices=vars.supportedLanguages, default=vars.lang)
   parser.add_argument("--no-gui", action="store_true")
 
+  parser.add_argument("--project", choices=vars.supportedProjects, default=vars.project)
+
   args = parser.parse_args()
   vars.lang = args.lang
   vars.no_gui = args.no_gui
+  vars.project = args.project
 
 parseArgs()
 if vars.no_gui:
-  ui.terminal()
+  ui.terminal(projectType=vars.project)
 else:
-  ui.GUI()
+  ui.GUI(projectType=vars.project)
