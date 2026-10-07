@@ -1,7 +1,7 @@
 # VARS
-no_gui = False
+# Sets if its a terminal or not
+no_gui = True
 savePath = None
-terminalClose = False
 
 # Settings
 lang = "en"

@@ -1,4 +1,4 @@
-**A Bad Program to get paper Versions**
+**A not so bad Program to get paper Versions**
 
 if you want to use this then:
 Clone This Project using something like git:<br>
