@@ -25,5 +25,5 @@ Then type the version you want download the JAR and you are good to go!
 Preview:<br>
 <img src="assets/preview.png">
 
-<small>An unofficial open-source downloader for Paper Minecraft servers.
-This project is not affiliated with, sponsored by, or endorsed by PaperMC.</small>
+<sup>An unofficial open-source downloader for Paper Minecraft servers.
+This project is not affiliated with, sponsored by, or endorsed by PaperMC.</sup>
