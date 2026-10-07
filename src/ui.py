@@ -11,7 +11,7 @@ def GUI(projectType: str):
   app = ctk.CTk()
   app.geometry("310x220")
   app.title(f"{projectType.capitalize()} Downloader")
-  app.iconbitmap("src/icon.ico")
+  app.iconbitmap("icon.ico")
 
   resultLabel = ctk.CTkLabel(app, text="/")
   resultLabel.pack(padx=20, pady=10)
